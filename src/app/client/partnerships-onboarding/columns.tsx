@@ -16,6 +16,7 @@ import Toggle from "@/components/ui/toggle";
 import React from "react";
 import { FaGear } from "react-icons/fa6";
 import { HiDotsVertical } from "react-icons/hi";
+import { Download } from "lucide-react";
 import Link from "next/link";
 import { PartnerShipClientTableContent } from "../../../../types/TableTypes";
 
@@ -33,7 +34,7 @@ export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
 
       return (
           <div className="flex justify-center">
-              {/*Badge that reflects the status of the Partnership*/}
+              {/*Badge that reflects if the Document is mandatory*/}
               {rowMandatory}
           </div>
       )
@@ -58,12 +59,12 @@ export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
     accessorKey: "validated",
     header: "Action",
     cell: ({ row }) => {
-      //Variable where we store the status value
+      //Variable where we store the boolean value of validated
       const rowValidated = row.original.validated
 
       return (
           <div className="flex justify-center">
-              {/*Badge that reflects the status of the Partnership*/}
+              {/*Button to validate the document*/}
               {rowValidated?<></> : <><Button>Validate</Button></>}
           </div>
       )
@@ -78,8 +79,8 @@ export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
 
       return (
           <div className="flex justify-center">
-              {/*Badge that reflects the status of the Partnership*/}
-              <Button>Upload</Button>
+              {/*Button that lets you upload*/}
+              <Button size="icon" variant={"ghost"}><Download className="h-7 w-7 text-black dark:text-slate-900 fill-black-500" /></Button>{/*Button for the delete function*/}
           </div>
       )
   }
