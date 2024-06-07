@@ -1,23 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import Badge from "@/components/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Toggle from "@/components/ui/toggle";
 import React from "react";
-import { FaGear } from "react-icons/fa6";
-import { HiDotsVertical } from "react-icons/hi";
+import ModalContextProvider from "@/app/context/modalContextProvider";
+import {ModalUpload} from "@/app/examples/modal/modalUpload"
 import { Download } from "lucide-react";
-import Link from "next/link";
 import { PartnerShipClientTableContent } from "../../../../types/TableTypes";
 
 export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
@@ -64,8 +53,9 @@ export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
 
       return (
           <div className="flex justify-center">
-              {/*Button to validate the document*/}
-              {rowValidated?<></> : <><Button>Validate</Button></>}
+            {!rowValidated ? <ModalContextProvider>
+              <ModalUpload ButtonContent="Validate"></ModalUpload>
+            </ModalContextProvider> : (<></>)}
           </div>
       )
   }
