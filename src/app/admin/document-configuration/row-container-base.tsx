@@ -30,6 +30,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 interface Props {
   row: Row;
@@ -170,9 +171,11 @@ export default function RowContainer(props: Props) {
             </div>
 
             <div className="flex items-center justify-center w-1/10 gap-x-8">
-              <Button variant={"ghost"} size={"icon"}>
-                <Pencil />
-              </Button>
+              <Link href={"./segment-edit"}>
+                <Button variant={"ghost"} size={"icon"}>
+                  <Pencil />
+                </Button>
+              </Link>
               <Button
                 variant={"ghost"}
                 size={"icon"}
@@ -218,9 +221,8 @@ export default function RowContainer(props: Props) {
                 }}
               >
                 <ChevronRight
-                  className={`transition-transform transform ${
-                    showSegmentLoops[row.id] ? "rotate-90" : ""
-                  }`}
+                  className={`transition-transform transform ${showSegmentLoops[row.id] ? "rotate-90" : ""
+                    }`}
                 />
               </Button>
             </div>
@@ -298,9 +300,8 @@ export default function RowContainer(props: Props) {
               {row.segments.map((segment) => (
                 <div
                   key={segment.id}
-                  className={`border-s ms-10 ${
-                    row.segments.indexOf(segment) !== 0 ? "border-t" : ""
-                  }`}
+                  className={`border-s ms-10 ${row.segments.indexOf(segment) !== 0 ? "border-t" : ""
+                    }`}
                 >
                   <RowContainer
                     key={segment.id}

@@ -98,16 +98,8 @@ export const columns: ColumnDef<ProductsT>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem
-                onClick={() =>
-                  navigator.clipboard.writeText(String(produtct.id))
-                }
-              >
-                Copy payment ID
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
