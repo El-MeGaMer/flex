@@ -69,7 +69,7 @@ export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
 
       return (
           <div className="flex justify-center">
-              {/*Button that lets you upload*/}
+              {/*Button that lets you download*/}
               <Button size="icon" variant={"ghost"}><Download className="h-7 w-7 text-black dark:text-slate-900 fill-black-500" /></Button>{/*Button for the delete function*/}
           </div>
       )
