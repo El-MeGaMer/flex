@@ -13,6 +13,7 @@ import ModalsPartners from "../partner-list";
 import { ModalAddPartner } from "./modalAddPartner";
 import { ModalDeletePartner } from "./modalDeletePartner";
 import { ModalDeleteDocument } from "./modalDeleteDocument";
+import { ModalAddPartnerships } from "./modalAddPartnership";
 interface ModalsProps {
   modalPartner?: boolean;
   modalAddDoc?: boolean;
@@ -33,6 +34,11 @@ interface ModalsProps {
   selectedItemName?: string;
   selectedItemId?:string;
   modalDeleteDocument?: boolean;
+  partnerId?: string;
+  clientId?:string;
+  modalAddPartnership?: boolean;
+  partnershipId?: string;
+  ediType?: string;
 }
 
 export default function Modals({
@@ -51,7 +57,12 @@ export default function Modals({
   modalDeletePartner,
   selectedItemName,
   selectedItemId,
-  modalDeleteDocument
+  modalDeleteDocument,
+  partnerId,
+  clientId,
+  modalAddPartnership,
+  partnershipId,
+  ediType
 }: ModalsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -73,11 +84,12 @@ export default function Modals({
           ButtonContent="Modal"
         />
       )}
-      {modalAddDoc && (
+      {modalAddDoc && partnerId && (
         <ModalAddDoc
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           ButtonContent="Add Document +"
+          partnerId={partnerId}
         />
       )}
       {modalTest && (
@@ -96,6 +108,10 @@ export default function Modals({
       )}
       {modalUpload && (
         <ModalUpload
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+		  partnershipId={partnershipId}
+		  ediType={ediType}
           ButtonContent="Subir Documento"
         />
       )}
@@ -116,12 +132,13 @@ export default function Modals({
           ButtonContent="Add Partner +"
         />
       )}
-      {modalDeletePartner && selectedItemName &&(
+      {modalDeletePartner && selectedItemName && selectedItemId &&(
         <ModalDeletePartner
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           ButtonContent="Delete"
           itemName={selectedItemName}
+          itemId={selectedItemId}
         />
       )}
       {modalDeleteDocument && selectedItemName && selectedItemId &&(
@@ -131,6 +148,12 @@ export default function Modals({
           ButtonContent="Delete"
           itemName={selectedItemName}
           itemId={selectedItemId}
+        />
+      )}
+      {modalAddPartnership && clientId && (
+        <ModalAddPartnerships 
+          ButtonContent="Add Partnership +"
+          clientId={clientId}
         />
       )}
     </div>

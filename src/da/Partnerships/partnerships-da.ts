@@ -1,15 +1,15 @@
 "use server"
-import { document, PrismaClient,Prisma, Partner } from "@prisma/client";
+import { document, PrismaClient,Prisma, Partner, error } from "@prisma/client";
 const prisma = new PrismaClient();
 
 //Create partnership
-export async function createPartnership(){
+export async function createPartnership(partnerId:string, clientId: string){
     try{
-        const partnership = await prisma.associated_partner.create({
+        const partnership = await prisma.partnership.create({
             data: {
-                partner: {},
-                uploaded_documents: {},
-                client: {}
+                partnerId: partnerId,
+                clientId: clientId,
+                uploaded_documents: {}
             }
         })
         if(!partnership){
@@ -25,7 +25,15 @@ export async function createPartnership(){
 //Read partnerships
 export async function getAllPartnerships(){
     try{
-        const partnerships = await prisma.associated_partner.findMany();
+        const partnerships = await prisma.partnership.findMany({
+            include: {
+                uploaded_documents: {
+                    include: {
+                        errors: true
+                    }
+                }
+            }
+        });
         if(!partnerships){
             throw new Error("Failed to fetch partnerships");
         }
@@ -39,9 +47,25 @@ export async function getAllPartnerships(){
 //Read partnership by Id
 export async function getPartnershipById(id:string){
     try{
-        const partnership = await prisma.associated_partner.findUnique({
+        const partnership = await prisma.partnership.findUnique({
             where: {
                 id:id
+            }, 
+            include: {
+                uploaded_documents: {
+                    include: {
+                        errors: true
+                    }
+                },
+                partner: {
+                    include: {
+                        EDI_documents:{
+                            include: {
+                                structure: true
+                            }
+                        }
+                    }
+                }
             }
         });
         if(!partnership){
@@ -55,9 +79,9 @@ export async function getPartnershipById(id:string){
 }
 
 //Update partnership uploaded documents
-export async function updatePartnershipDocuments(id:string, document:document){
+export async function updatePartnershipDocuments(id:string, document:document, errors:error){
     try{
-        const uploadedPartner = await prisma.associated_partner.update({
+        const uploadedPartner = await prisma.partnership.update({
             where: {
                 id:id
             },
@@ -65,7 +89,12 @@ export async function updatePartnershipDocuments(id:string, document:document){
                 uploaded_documents: {
                     create: {
                         type: document.type,
-                        json_document: document.json_document as Prisma.JsonObject,
+                        json_document: document.json_document,
+                        errors: {
+                            createMany: {
+                                data: errors
+                            }
+                        }
                     }
                 },
             },
@@ -86,7 +115,7 @@ export async function updatePartnershipDocuments(id:string, document:document){
 //Delete partnership
 export async function deletePartnership(id:string){
     try{
-        const deletedPartnership = await prisma.associated_partner.delete({
+        const deletedPartnership = await prisma.partner.delete({
             where: {
                 id:id
             }

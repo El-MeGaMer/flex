@@ -8,11 +8,20 @@ import ModalContextProvider from "@/app/context/modalContextProvider";
 import {ModalUpload} from "@/app/examples/modal/modalUpload"
 import { Download } from "lucide-react";
 import { PartnerShipClientTableContent } from "./../../../types/TableTypes";
+import Modals from "@/app/examples/modal";
+import ErrorContextProvider from "@/app/context/errorContextProvider";
 
 export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
   {
     accessorKey: "document_name",
     header: "Documents",
+    cell: ({ row }) => {
+      return(
+        <div className="flex">
+          {row.original.type}
+        </div>
+      )
+    }
   },
   {
     accessorKey: "mandatory",
@@ -48,13 +57,19 @@ export const columns: ColumnDef<PartnerShipClientTableContent>[] = [
     accessorKey: "validated",
     header: "Action",
     cell: ({ row }) => {
-      //Variable where we store the boolean value of validated
-      const rowValidated = row.original.validated
+      //Variable where we store the status value
+      const rowValidated = row.original.status;
+      var validated = false;
+      rowValidated === "Validated" ? validated = true : validated = false
 
       return (
           <div className="flex justify-center">
-            {!rowValidated ? <ModalContextProvider>
-              <ModalUpload ButtonContent="Validate"></ModalUpload>
+            {!validated ? <ModalContextProvider>
+              <ErrorContextProvider>
+                <Modals modalUpload={true} partnershipId={row.original.partnershipId} ediType={row.original.type}/>
+                <Modals modalErrorList={true} />
+                <Modals modalSuccess={true}/>
+              </ErrorContextProvider>
             </ModalContextProvider> : (<></>)}
           </div>
       )
