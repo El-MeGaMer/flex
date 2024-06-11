@@ -36,7 +36,7 @@ model partnership {
   clientId String @unique @db.ObjectId
   partnerId String @unique @db.ObjectId
   client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  partner Partner @relation(fields: [partnerIdId], references: [id], onDelete: Cascade)
+  partner Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
 
   @@unique([clientId, partnerId])
 }
@@ -76,7 +76,7 @@ model EDI_Document {
 model Segment {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  mandatory String  @default("M")
+  mandatory Boolean @default(true)
   max       Int
   template  Boolean @default(true)
 
